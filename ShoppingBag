@@ -1,0 +1,115 @@
+
+
+public class ShoppingBag {
+	
+	private GroceryItem[] bag; //array-based implementation of the bag
+	private int size; // number of items currently in the bag
+	private int capacity; //current capacity
+	
+	public ShoppingBag() {
+		this.bag = new GroceryItem[5] ;
+		this.size = 0;
+		this.capacity = 5;
+	}
+	
+	private int find(GroceryItem item) {
+		//search thru bag
+		for(int i =0;i<this.size;i++) {
+			//if the item is the same as the item 
+			if(item.equals(this.bag[i])) {
+				//return the index of the item
+				return i;
+			}
+			continue;
+		}
+		//return -1 if not found
+		return -1;
+	}
+	
+	private void grow() {
+		//create a new temp array with 5 more spots
+		GroceryItem[] tempList = new GroceryItem[this.capacity+5];
+		//transfer bag
+		for(int i=0;i<bag.length-1;i++) {
+			tempList[i]=bag[i];
+		}
+		//setting bag to the new longer list
+		bag=tempList;
+		//increase capacity by 5
+		capacity+=5;
+	}
+	
+	public void add(GroceryItem item) {
+		//check capacity then grow if needed
+		if(this.size==this.capacity) {
+			grow();
+		}
+		//then add the item at index[size](next empty spot)
+		bag[size]=item;
+		//increase size
+		size++;
+	}
+	
+	public boolean remove(GroceryItem item) {
+		//find the item
+		int location = find(item);
+		//if the item is in the list then do the following
+		if(location!=-1) {
+			//move the last item in the array to the removable item's spot, then set that last spot to null
+			bag[location] = bag[this.size-1];
+			bag[this.size-1] = null;
+			//decrease size
+			this.size--;
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public double salesPrice() {
+		//the same as salesTax but get all the price of each GroceryItem at bag[i]
+		double priceSum=0.00;
+		for(int i=0;i<size;i++) {
+			priceSum+=bag[i].getPrice();
+		}
+		return priceSum;
+	}
+	
+	public double salesTax() {
+		double tax=6.625;
+		double taxSum=0.00;
+		//loop thru array and check each GroceryItem
+		for(int i=0;i<size;i++){
+			// see if items are taxable or not
+			boolean taxable = bag[i].isTaxable();
+			if(taxable==true) {
+				//add the tax from the item to the taxSum
+				taxSum+=bag[i].getPrice()*tax;
+			}
+			continue;
+		}
+		//return taxSum
+		return taxSum;
+	}
+	
+	public void print() {
+		//loop through bag
+		for(int i=0;i<size;i++) {
+    print using 
+			System.out.println(bag[i].ToString());
+		}
+	}
+	
+	
+	public static void main(String[] args) {
+		// use this to test
+			ShoppingBag bag = new ShoppingBag();
+			GroceryItem item1 = new GroceryItem("1", 1, true);
+			bag.add(item1);
+			bag.print();
+			
+			
+	}
+
+}
