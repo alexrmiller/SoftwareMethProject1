@@ -1,0 +1,46 @@
+public class GroceryItem {
+	private String name;
+	private double price;
+	private boolean taxable;
+	
+	public GroceryItem(String n, double p, boolean t) {
+		this.name=n;
+		this.price=p;
+		this.taxable=t;
+	}
+	
+	public boolean isTaxable() {
+		return this.taxable;
+	}
+	
+	public double getPrice() {
+		return this.price;
+	}
+
+	public boolean equals(GroceryItem obj) {
+		return (this.name.equals(obj.name) && this.price==obj.price && this.taxable==obj.taxable);
+	}
+	
+	public String ToString() {	
+		if(this.taxable==true) {
+			return this.name + ": $" + this.price + " :  taxable.";
+		}
+		else {
+			return this.name + ": $" + this.price + " :  tax free.";	
+		}
+		
+	}
+	
+	public static void main(String[] args) {
+		// use this to test
+
+			GroceryItem first = new GroceryItem("test", 5.55, true);
+			GroceryItem second = new GroceryItem("test1", 5.65, false);
+			String test = first.ToString();
+			boolean isSame = first.equals(second);
+			System.out.println(test);
+			System.out.println(isSame);
+	}
+
+
+}
