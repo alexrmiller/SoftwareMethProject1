@@ -1,46 +1,55 @@
+import java.text.DecimalFormat;
+
 public class GroceryItem {
 	private String name;
 	private double price;
 	private boolean taxable;
 	
-	public GroceryItem(String n, double p, boolean t) {
+	
+	public GroceryItem(String n, double p, boolean tax) {
 		this.name=n;
 		this.price=p;
-		this.taxable=t;
+		this.taxable=tax;
 	}
 	
+	//getter method to get the taxable prop in another class
 	public boolean isTaxable() {
 		return this.taxable;
 	}
 	
+	//getter method to get the taxable prop in another class
 	public double getPrice() {
 		return this.price;
 	}
 
+	//overrides the equals method
 	public boolean equals(GroceryItem obj) {
-		return (this.name.equals(obj.name) && this.price==obj.price && this.taxable==obj.taxable);
-	}
-	
-	public String ToString() {	
-		if(this.taxable==true) {
-			return this.name + ": $" + this.price + " :  taxable.";
+		//make sure it's a grocery item
+		if (obj instanceof GroceryItem) {
+			//type cast to be able to properly compare
+			GroceryItem item = (GroceryItem) obj;
+			//compare all the properties of the object
+			return (this.name.equals(item.name) && this.price==item.price && this.taxable==item.taxable);
 		}
 		else {
-			return this.name + ": $" + this.price + " :  tax free.";	
+			//not the same object so it's auto-false
+			return false;
 		}
-		
 	}
 	
-	public static void main(String[] args) {
-		// use this to test
-
-			GroceryItem first = new GroceryItem("test", 5.55, true);
-			GroceryItem second = new GroceryItem("test1", 5.65, false);
-			String test = first.ToString();
-			boolean isSame = first.equals(second);
-			System.out.println(test);
-			System.out.println(isSame);
+	//override toString method to be able to print out all the info corectly
+	public String ToString() {
+		DecimalFormat f = new DecimalFormat("#0.00");
+		//check if it's taxable
+		if(this.taxable==true) {
+			return this.name + ": $" + f.format(this.price) + " :  taxable.";
+		}
+		else {
+			return this.name + ": $" + f.format(this.price) + " :  tax free.";	
+		}
+		
 	}
 
 
 }
+
