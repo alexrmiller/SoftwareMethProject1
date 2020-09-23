@@ -1,0 +1,99 @@
+import java.util.Scanner;
+import java.text.DecimalFormat;
+public class Shopping {
+	
+	//place input variables here as global variables 
+	Scanner shopping = new Scanner(System.in).useDelimiter("\n");
+	ShoppingBag bag = new ShoppingBag();
+	
+	public void run() { 
+		
+		String line =shopping.next();
+		String[] input = line.split(" ");
+		switchstatement(input[0].charAt(0), input);
+		
+	}
+	
+	public void switchstatement(char abc, String[] arr) { 
+		
+		switch(abc) {
+		//takes user inputs name, price, boolean, calls for GroceryItem class and ShoppingBag add() class 
+		case 'A' :
+			 
+			String name = arr[1];
+			double price = Double.parseDouble(arr[2]);
+			boolean Bool = Boolean.parseBoolean(arr[3].substring(0, arr[3].length()-1)); 
+			GroceryItem item1 = new GroceryItem(name, price, Bool);
+			bag.add(item1);
+			System.out.println(name + " " + Bool + " added to the bag.");
+			run();
+			break;
+		
+		//takes user iputs name, price, boolean, calls for GroceryItem and Shopping Bag remove() class
+		case 'R' :
+			
+			String name2 = arr[1];
+			double price2 = Double.parseDouble(arr[2]);
+			boolean Bool2 = Boolean.parseBoolean(arr[3].substring(0, arr[3].length()-1)); 
+			GroceryItem item2 = new GroceryItem(name2, price2, Bool2);
+			boolean isEmpty = bag.remove(item2);
+			//don't take it out again because then it's taking two out also check if false
+			if (isEmpty==false) {
+				System.out.print("Unable to remove, this item is not in the bag \n");
+			}else {
+				System.out.println(name2 + " " + price2 + " removed");
+			}
+			run();
+			break;
+			
+		case 'P' :
+			 
+			if (bag.Itemcounter()==0) {
+				bag.emptycheck();
+			}
+			else {
+				System.out.print("** You have " + bag.Itemcounter()+ " item(s) in the bag \n");
+				//had to format the price in GroceryItem ToString
+				bag.print();
+				System.out.println("**End of list");
+			}
+			run();
+			break;
+			
+		case 'C' :
+			//format so that 0.01 would show
+			DecimalFormat f = new DecimalFormat("#0.00");
+			double bagPrice = bag.salesPrice();
+			double bagTax = bag.salesTax();
+			if (bag.Itemcounter()==0) {
+				System.out.print("Unable to Check out,the bag is empty! \n");
+			}
+			else {
+				System.out.print("**Checking out " + bag.Itemcounter()+ " Item(s) \n" );
+				bag.print();
+				System.out.print("*Sales Total: " + f.format(bagPrice)+ " \n");
+				System.out.print("*Sales Tax: " + f.format(bagTax)+ " \n");
+				System.out.print("*Total Amount Paid :" + f.format(bagTax+bagPrice) + " \n");
+				System.out.print("**Checking out  \n" );
+				bag = new ShoppingBag();
+			}
+			run();
+			break;
+			
+		case 'Q' :
+			System.out.print("Thanks for shopping with us!"); 
+			break;
+			
+		default : 
+			
+			System.out.println("Invalid command!");
+			//it was trying to read the other values inputted as the next a, r, p whatever so get rid of them by jumping to new line
+			shopping.nextLine();
+			run();
+			break;
+					
+		}
+		shopping.close();
+	}
+	
+}
