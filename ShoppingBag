@@ -4,44 +4,42 @@ public class ShoppingBag {
 	
 	private GroceryItem[] bag; //array-based implementation of the bag
 	private int size; // number of items currently in the bag
-	private int capacity; //current capacity
 	
 	public ShoppingBag() {
 		this.bag = new GroceryItem[5] ;
 		this.size = 0;
-		this.capacity = 5;
 	}
 	
+	//gives the index of the target GroceryItem item. If not found it returns -1
 	private int find(GroceryItem item) {
-		//search thru bag
-		for(int i =0;i<this.size;i++) {
-			//if the item is the same as the item 
+		//search thru bag looking for the item at bag[i]
+		for(int i =0;i<this.size;i++) { 
 			if(item.equals(this.bag[i])) {
-				//return the index of the item
+				//i is the index of the item
 				return i;
 			}
 			continue;
 		}
-		//return -1 if not found
+		//not found
 		return -1;
 	}
 	
+	//grows the bag by 5. Used when trying to add to a bag with max capacity
 	private void grow() {
-		//create a new temp array with 5 more spots
-		GroceryItem[] tempList = new GroceryItem[this.capacity+5];
-		//transfer bag
-		for(int i=0;i<bag.length-1;i++) {
+		//create a new array with 5 more spots
+		GroceryItem[] tempList = new GroceryItem[bag.length+5];
+		//transfer bag to the new larger array
+		for(int i=0;i<bag.length;i++) {
 			tempList[i]=bag[i];
 		}
 		//setting bag to the new longer list
 		bag=tempList;
-		//increase capacity by 5
-		capacity+=5;
 	}
 	
+	//method to add GroceryItem item to the shopping bag
 	public void add(GroceryItem item) {
 		//check capacity then grow if needed
-		if(this.size==this.capacity) {
+		if(this.size==bag.length) {
 			grow();
 		}
 		//then add the item at index[size](next empty spot)
@@ -50,10 +48,10 @@ public class ShoppingBag {
 		size++;
 	}
 	
+	//removes the first instance of GroceryItem item. returns true if item was removed, false if not found.
 	public boolean remove(GroceryItem item) {
-		//find the item
+		//find the item 
 		int location = find(item);
-		//if the item is in the list then do the following
 		if(location!=-1) {
 			//move the last item in the array to the removable item's spot, then set that last spot to null
 			bag[location] = bag[this.size-1];
@@ -67,8 +65,9 @@ public class ShoppingBag {
 		}
 	}
 	
+	//loops through the bag adding up the price of all the GroceryItems, returns a double with the total price
 	public double salesPrice() {
-		//the same as salesTax but get all the price of each GroceryItem at bag[i]
+		//get all the price of each GroceryItem at bag[i] and add them to priceSum
 		double priceSum=0.00;
 		for(int i=0;i<size;i++) {
 			priceSum+=bag[i].getPrice();
@@ -76,40 +75,49 @@ public class ShoppingBag {
 		return priceSum;
 	}
 	
+	//loops through the bag adding up the sales tax on all TAXABLE items, returns a double with total sales Tax price
 	public double salesTax() {
-		double tax=6.625;
+		double tax=.06625;
 		double taxSum=0.00;
-		//loop thru array and check each GroceryItem
+		//loop thru array and check if each GroceryItem is taxable or not and adding it to taxSum
 		for(int i=0;i<size;i++){
-			// see if items are taxable or not
 			boolean taxable = bag[i].isTaxable();
 			if(taxable==true) {
-				//add the tax from the item to the taxSum
 				taxSum+=bag[i].getPrice()*tax;
 			}
 			continue;
 		}
-		//return taxSum
 		return taxSum;
 	}
 	
+	//loops through the bag a prints out each GroceryItem using the GroceryItem class' toString
 	public void print() {
-		//loop through bag
+		if(size==0) {
+			return;
+		}
+		else
 		for(int i=0;i<size;i++) {
-    print using 
-			System.out.println(bag[i].ToString());
+			System.out.println(this.bag[i].ToString());
 		}
 	}
 	
-	
-	public static void main(String[] args) {
-		// use this to test
-			ShoppingBag bag = new ShoppingBag();
-			GroceryItem item1 = new GroceryItem("1", 1, true);
-			bag.add(item1);
-			bag.print();
-			
-			
+	public void emptycheck() {
+		if(this.size < 1) {
+		System.out.print("the bag is empty \n");
+		}
+		 
 	}
+	public int Itemcounter( ) {
+		int counter = 0;
+		
+		for (int i = 0; i < bag.length; i++) {
+			if (bag[i] != null) {
+				counter ++;
+			} 
+		}
+		
+		return counter;     
+	}
+
 
 }
